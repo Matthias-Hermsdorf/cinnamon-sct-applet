@@ -57,6 +57,10 @@
         "type" : "header",
         "description" : "Applet Icon"
     },
+    "iconChanged" : {
+        "type": "generic",
+        "default" : "false"
+    },
     "iconName": {
         "type": "iconfilechooser",
         "default" : "night-light-symbolic",

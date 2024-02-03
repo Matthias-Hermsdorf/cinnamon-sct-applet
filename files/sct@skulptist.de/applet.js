@@ -3,15 +3,9 @@ const Util = imports.misc.util
 const Settings = imports.ui.settings  // Needed for settings API
 const GLib = imports.gi.GLib
 
-
-const defaultIconName = "computer"
-
-// const homeDir = GLib.get_home_dir()
-// const appletPath = homeDir+ '/.local/share/cinnamon/applets/sct@skulptist.de';
-// const iconPath = appletPath + "/iconThermometer.svg";
-const iconPath = global.datadir + "/iconThermometer.svg";
-
-// let currentStep = 0
+const homeDir = GLib.get_home_dir()
+const appletPath = homeDir+ '/.local/share/cinnamon/applets/sct@skulptist.de';
+const iconPath = appletPath + "/icons/iconThermometer2.svg";
 
 function MyApplet(metadata, orientation, panel_height, instance_id) {
     this._init(metadata, orientation, panel_height, instance_id);
@@ -20,13 +14,13 @@ function MyApplet(metadata, orientation, panel_height, instance_id) {
 MyApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
     
-    iconName: defaultIconName,
+    // iconName: ,
+    iconChanged: "false",
     
     _init: function(metadata, orientation, panel_height, instance_id) {
         Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id);
         
         this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
-        
         
         this.settings.bindProperty(Settings.BindingDirection.OUT, "currentStep", "currentStep");
         
@@ -40,23 +34,30 @@ MyApplet.prototype = {
         let steps = this.getSteps()
         this.setColorTemperature(steps[this.currentStep])    
         
+        this.settings.bindProperty(Settings.BindingDirection.OUT, "iconChanged", "iconChanged");
         this.settings.bindProperty(Settings.BindingDirection.IN, "iconName", "iconName", this.handleIconChange);
         
-        this.set_applet_icon_symbolic_name(this.iconName);
-        
-        // this.set_applet_icon_symbolic_path(iconPath)
-        // this.set_applet_icon_path(iconPath)
-        
-        // this.notifyInstallation()
+        this.setIcon()
     },
     
+    setIcon () {
+        global.log("iconChanged", this.iconChanged, "iconName", this.iconName)
+        if (this.iconChanged == "true") {
+            this.set_applet_icon_symbolic_name(this.iconName);
+        } else {
+            this.set_applet_icon_symbolic_path(iconPath)  
+        }
+    },
+
     handleIconChange: function() {
-        this.set_applet_icon_name(this.iconName)
+        global.log("iconChange")
+        this.iconChanged = "true"
+        this.setIcon()
     },
     
     handleResetIconName: function() {
-        
-        this.set_applet_icon_name(defaultIconName)
+        this.iconChanged = "false"
+        this.setIcon()
     },
     
     getSteps: function() {
