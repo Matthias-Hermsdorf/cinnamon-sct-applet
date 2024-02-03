@@ -116,11 +116,8 @@ MyApplet.prototype = {
     },
     
     notifyInstallation: function() {
-        const title = "Please install sct"
-        // the notify-send body has a max length, shorter than the text I want to write, 
-        // but why and where is the documentation?
-        const body = "The sct toggle applet uses sct to set the color temperature, " +
-        "but calling sct returns an error."
+        const title = "sct not found"
+        const body = "Please install sct to set the color temperature with this applet."
         Util.spawnCommandLine(`notify-send "${title}" "${body}" -i ${this.iconName}`)
     }
 };
