@@ -2,10 +2,19 @@ const Applet = imports.ui.applet
 const Util = imports.misc.util
 const Settings = imports.ui.settings  // Needed for settings API
 const GLib = imports.gi.GLib
+const Gettext = imports.gettext; // for the translations
+
+const uuid = "sct@skulptist.de"
 
 const homeDir = GLib.get_home_dir()
-const appletPath = homeDir+ '/.local/share/cinnamon/applets/sct@skulptist.de'
+const appletPath = homeDir+ "/.local/share/cinnamon/applets/"+uuid
 const iconPath = appletPath + "/icons/iconThermometer2.svg"
+
+Gettext.bindtextdomain(uuid, homeDir + "/.local/share/locale");
+
+function _(str) {
+    return Gettext.dgettext(uuid, str);
+}
 
 function MyApplet(metadata, orientation, panel_height, instance_id) {
     this._init(metadata, orientation, panel_height, instance_id)
@@ -102,21 +111,21 @@ MyApplet.prototype = {
     
     setColorTemperature: function (val) {    
     
-        Util.spawnCommandLineAsyncIO("sct "+val, (stdout, stderr, exitCode)=> { 
+        Util.spawnCommandLineAsyncIO("sctfdf "+val, (stdout, stderr, exitCode)=> { 
         
             if (stderr) {
                 this.notifyInstallation()
-                console.log("setColorTemperature sends an error")
+                global.log("setColorTemperature sends an error")
             // } else {
             //     console.log("setColorTemperature seems to be ok")
             }
         })
-        this.set_applet_tooltip(_("sct is now at " + val + "K"))
+        this.set_applet_tooltip(_("sct is now at")+ " " + val + "K")
     },
     
     notifyInstallation: function() {
-        const title = "sct not found"
-        const body = "Please install sct to set the color temperature with this applet."
+        const title = _("sct not found")
+        const body = _("Please install sct to set the color temperature with this applet.")
         Util.spawnCommandLine(`notify-send "${title}" "${body}" -i ${this.iconName}`)
     }
 }
