@@ -111,7 +111,7 @@ MyApplet.prototype = {
     
     setColorTemperature: function (val) {    
     
-        Util.spawnCommandLineAsyncIO("sctfdf "+val, (stdout, stderr, exitCode)=> { 
+        Util.spawnCommandLineAsyncIO("sct "+val, (stdout, stderr, exitCode)=> { 
         
             if (stderr) {
                 this.notifyInstallation()
