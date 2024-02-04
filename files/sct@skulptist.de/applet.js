@@ -1,7 +1,7 @@
 const Applet = imports.ui.applet
-const Util = imports.misc.util
+const Util = imports.misc.util // to spawn commands
 const Settings = imports.ui.settings  // Needed for settings API
-const GLib = imports.gi.GLib
+const GLib = imports.gi.GLib // for the home dir
 const Gettext = imports.gettext; // for the translations
 
 const uuid = "sct@skulptist.de"
@@ -10,8 +10,10 @@ const homeDir = GLib.get_home_dir()
 const appletPath = homeDir+ "/.local/share/cinnamon/applets/"+uuid
 const iconPath = appletPath + "/icons/iconThermometer2.svg"
 
+// translations are bound to the uuid and the keys
 Gettext.bindtextdomain(uuid, homeDir + "/.local/share/locale");
 
+// the _ seems to be the common name for the translation function
 function _(str) {
     return Gettext.dgettext(uuid, str);
 }
@@ -23,7 +25,7 @@ function MyApplet(metadata, orientation, panel_height, instance_id) {
 MyApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
     
-    // iconName: ,
+    // iconName will get populated by the bindProperty
     iconChanged: "false",
     
     _init: function(metadata, orientation, panel_height, instance_id) {
@@ -31,6 +33,7 @@ MyApplet.prototype = {
         
         this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
         
+        // the steps are an array, the currentStep is the current position in that array
         this.settings.bindProperty(Settings.BindingDirection.OUT, "currentStep", "currentStep")
         
         this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep1", "colorStep1")
@@ -67,6 +70,9 @@ MyApplet.prototype = {
         this.setIcon()
     },
     
+    // The color step configuration can be changed between clicks on the applet.
+    // The getter function makes it up to date all the time. There is less code
+    // so thats not a performance issue.
     getSteps: function() {
         let steps = []
         if (this.colorStep1) {
@@ -114,16 +120,14 @@ MyApplet.prototype = {
         Util.spawnCommandLineAsyncIO("sct "+val, (stdout, stderr, exitCode)=> { 
         
             if (stderr) {
-                this.notifyInstallation()
+                this.notifyMissingSctInstallation()
                 global.log("setColorTemperature sends an error")
-            // } else {
-            //     console.log("setColorTemperature seems to be ok")
             }
         })
         this.set_applet_tooltip(_("sct is now at")+ " " + val + "K")
     },
     
-    notifyInstallation: function() {
+    notifyMissingSctInstallation: function() {
         const title = _("sct not found")
         const body = _("Please install sct to set the color temperature with this applet.")
         Util.spawnCommandLine(`notify-send "${title}" "${body}" -i ${this.iconName}`)
