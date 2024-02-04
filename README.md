@@ -1,6 +1,6 @@
 # SCT Toggle 
 
-A Cinnamon applet to toggle through color temperatures.
+A Linux Mint Cinnamon Applet to toggle through color temperatures.
 
 ## Install from this repo
 1. Install `sct` with your favorite package management or by the terminal command `sudo apt install sct` . This command line tool 
