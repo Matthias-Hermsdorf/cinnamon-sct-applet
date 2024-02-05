@@ -34,7 +34,7 @@ MyApplet.prototype = {
         this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
         
         // the steps are an array, the currentStep is the current position in that array
-        this.settings.bindProperty(Settings.BindingDirection.OUT, "currentStep", "currentStep")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "currentStep", "currentStep")
         
         this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep1", "colorStep1")
         this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep2", "colorStep2")
