@@ -25,29 +25,31 @@ function MyApplet(metadata, orientation, panel_height, instance_id) {
 MyApplet.prototype = {
     __proto__: Applet.IconApplet.prototype,
     
-    // iconName will get populated by the bindProperty
+    instanceId: undefined, 
+    iconName: undefined, // iconName will get populated by the bindProperty
     iconChanged: "false",
     
     _init: function(metadata, orientation, panel_height, instance_id) {
         Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id)
-        
-        this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
+        this.instanceId = instance_id
+        // this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
+        this.settings = new Settings.AppletSettings(this, metadata.uuid)
         
         // the steps are an array, the currentStep is the current position in that array
         this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "currentStep", "currentStep")
         
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep1", "colorStep1")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep2", "colorStep2")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep3", "colorStep3")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep4", "colorStep4")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep5", "colorStep5")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep6", "colorStep6")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "colorStep7", "colorStep7")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep1", "colorStep1", this.handleColorChange)
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep2", "colorStep2")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep3", "colorStep3")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep4", "colorStep4")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep5", "colorStep5")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep6", "colorStep6")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "colorStep7", "colorStep7")
         let steps = this.getSteps()
         this.setColorTemperature(steps[this.currentStep])    
         
-        this.settings.bindProperty(Settings.BindingDirection.OUT, "iconChanged", "iconChanged")
-        this.settings.bindProperty(Settings.BindingDirection.IN, "iconName", "iconName", this.handleIconChange)
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "iconChanged", "iconChanged")
+        this.settings.bindProperty(Settings.BindingDirection.BIDIRECTIONAL, "iconName", "iconName")
         
         this.setIcon()
     },
@@ -58,6 +60,10 @@ MyApplet.prototype = {
         } else {
             this.set_applet_icon_symbolic_path(iconPath)  
         }
+    },
+
+    handleColorChange: function (e) {
+        global.log("handleColorChange", this.instanceId, e)
     },
 
     handleIconChange: function() {
@@ -96,6 +102,7 @@ MyApplet.prototype = {
         if (this.colorStep7) {
             steps.push(parseInt(this.colorStep7))
         }
+        global.log("getSteps", steps)
         return steps
     },
     
@@ -116,7 +123,6 @@ MyApplet.prototype = {
     },
     
     setColorTemperature: function (val) {    
-    
         Util.spawnCommandLineAsyncIO("sct "+val, (stdout, stderr, exitCode)=> { 
         
             if (stderr) {
