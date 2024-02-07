@@ -8,7 +8,7 @@ const uuid = "sct@skulptist.de"
 
 const homeDir = GLib.get_home_dir()
 const appletPath = homeDir+ "/.local/share/cinnamon/applets/"+uuid
-const iconPath = appletPath + "/icons/iconThermometer2.svg"
+const iconPath = appletPath + "/icons/appletIcon.svg"
 
 // translations are bound to the uuid and the keys
 Gettext.bindtextdomain(uuid, homeDir + "/.local/share/locale");
