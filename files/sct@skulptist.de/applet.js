@@ -2,18 +2,17 @@ const Applet = imports.ui.applet
 const Settings = imports.ui.settings  // Needed for settings API
 const GLib = imports.gi.GLib // for the home dir
 
-const connectSct = require("./connectSct.js")
-
-// the _ seems to be the common name for the translation function
-const {initTranslation, _} = require("./translation.js")
-
 const uuid = "sct@skulptist.de"
-
 const homeDir = GLib.get_home_dir()
 const appletPath = homeDir+ "/.local/share/cinnamon/applets/"+uuid
 const iconPath = appletPath + "/icons/appletIcon.svg"
 
+// the _ seems to be the common name for the translation function
+const {initTranslation, _} = require("./translation.js")
 initTranslation({uuid, homeDir})
+
+// handles the commandline and errors of the sct calls
+const {setColorTemperature} = require("./connectSct.js")
 
 
 function MyApplet(metadata, orientation, panel_height, instance_id) {
@@ -31,7 +30,6 @@ MyApplet.prototype = {
         Applet.IconApplet.prototype._init.call(this, orientation, panel_height, instance_id)
         this.instanceId = instance_id
         this.settings = new Settings.AppletSettings(this, metadata.uuid, instance_id)
-        // this.settings = new Settings.AppletSettings(this, metadata.uuid)
                 
         this.settings.bind("colorStep1", "colorStep1")
         this.settings.bind("colorStep2", "colorStep2")
@@ -65,6 +63,16 @@ MyApplet.prototype = {
         this.setIcon()
     },
     
+    on_applet_clicked: function() {
+        
+        let steps = this.getSteps()
+        let nextStep = this.getNextStep(steps.length)
+        let val = steps[nextStep]
+
+        setColorTemperature(val)  
+        this.set_applet_tooltip(_("sct is now at") + " " + val + "K")  
+    },
+
     // The color step configuration can be changed between clicks on the applet.
     // The getter function makes it up to date all the time. There is less code
     // so thats not a performance issue.
@@ -93,21 +101,8 @@ MyApplet.prototype = {
         }
         return steps
     },
-    
-    on_applet_clicked: function() {
-        
-        let steps = this.getSteps()
-        let currentStep = this.nextStep(steps.length)
-        let val = steps[currentStep]
 
-        connectSct.setColorTemperature(val)  
-
-        let translated = _("sct is now at") + " " + val + "K"
-        global.log("setAppletTooltip", translated)
-        this.set_applet_tooltip(translated)  
-    },
-
-    nextStep: function (stepsLength) {
+    getNextStep: function (stepsLength) {
         let currentStep = this.settings?.getValue("currentStep") || 0
         if (currentStep >= (stepsLength -1)) {
             currentStep = 0
