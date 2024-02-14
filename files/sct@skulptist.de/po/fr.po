@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-08 11:35+0100\n"
-"PO-Revision-Date: 2024-02-08 11:37+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2024-02-14 12:38+0100\n"
+"PO-Revision-Date: 2024-02-14 12:43+0100\n"
+"Last-Translator: Claudiux <claude.clerc@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: applet.js:73
+#: applet.js:70
 msgid "sct is now at"
 msgstr "sct est maintenant à"
 
@@ -38,20 +38,19 @@ msgstr "Bascule SCT"
 
 #. metadata.json->description
 msgid ""
-"Toggle screen temperatures with sct. \n"
-"Set up to 7 custom color temperatures and toggle through by clicking on the "
-"applet"
+"Toggle screen temperatures with sct. Set up to 7 custom color temperatures "
+"and toggle through by clicking on the applet"
 msgstr ""
 "Basculez les températures de l'écran avec sct.\n"
 "Configurez jusqu'à 7 températures de couleur personnalisées et passez d'une "
-"température à l'autre en cliquant sur l'applet."
+"température à l'autre en cliquant sur l'applet"
 
 #. settings-schema.json->head->description
 msgid "Color Temperatur Steps"
 msgstr "Étapes de température de couleur"
 
 #. settings-schema.json->colorStep1->description
-msgid "Color temperatur at step 1"
+msgid "Color temperature at step 1"
 msgstr "Température de couleur à l'étape 1"
 
 #. settings-schema.json->colorStep1->tooltip
@@ -64,11 +63,11 @@ msgstr ""
 "rouge, 6 500 à la lumière du jour et 10 000 au bleu."
 
 #. settings-schema.json->colorStep2->description
-msgid "Color temperatur at step 2"
+msgid "Color temperature at step 2"
 msgstr "Température de couleur à l'étape 2"
 
 #. settings-schema.json->colorStep3->description
-msgid "Color temperatur at step 3"
+msgid "Color temperature at step 3"
 msgstr "Température de couleur à l'étape 3"
 
 #. settings-schema.json->colorStep3->tooltip
@@ -81,24 +80,24 @@ msgstr ""
 "Facultatif. Ajoutez une autre valeur entre 1000 et 10000, ou laissez vide."
 
 #. settings-schema.json->colorStep4->description
-msgid "Color temperatur at step 4"
+msgid "Color temperature at step 4"
 msgstr "Température de couleur à l'étape 4"
 
 #. settings-schema.json->colorStep5->description
-msgid "Color temperatur at step 5"
+msgid "Color temperature at step 5"
 msgstr "Température de couleur à l'étape 5"
 
 #. settings-schema.json->colorStep6->description
-msgid "Color temperatur at step 6"
+msgid "Color temperature at step 6"
 msgstr "Température de couleur à l'étape 6"
 
 #. settings-schema.json->colorStep7->description
-msgid "Color temperatur at step 7"
+msgid "Color temperature at step 7"
 msgstr "Température de couleur à l'étape 7"
 
 #. settings-schema.json->head2->description
 msgid "Applet Icon"
-msgstr "Icône d'applet"
+msgstr "Icône de l'applet"
 
 #. settings-schema.json->iconName->description
 msgid "The icon to use in the panel"
