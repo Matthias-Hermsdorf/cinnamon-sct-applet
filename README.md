@@ -11,11 +11,11 @@ sets the screen temperature easily with `sct 5000`
 1. Add the applet to your screen by searching for `sct@skulptist.de`, select it and press the + button to add it.
 
 ## Install from the official repo
-As soon as my pull request is acepted, you could omit the cloning and copying steps and download the applet through the applets app.
+Go to the applets app, search sct, download the widget and activate it.
 
-Don't forget to give a star for the applet ;-)
+Don't forget to give a [star for the applet](https://cinnamon-spices.linuxmint.com/applets/view/389) ;-)
 
-You have to install `sct`. It does not get shipped with the applet.
+You have to install `sct` seperatly with `sudo apt install sct` or your favorite app store. It does not get shipped with the applet.
 
 ## Usage
 Color temperature steps at 4000K, 5500K and 6500K are predefined. Just click on the Applet Icon to 
@@ -27,3 +27,30 @@ and 10000 is very blue.
 
 If the app icon is not the one you want to use, change it in the settings and select another one from the
 gtk icon library.
+
+## Development hints
+
+At the moment the Applet gets developed in this Repo: https://github.com/Matthias-Hermsdorf/cinnamon-sct-applet and versions get copied to the Main repo. Perhaps I change that and use a branche in my fork. 
+
+make a soft link from the repo to ~/.locale/share/cinnamon/applets to have the code in your custom projects folder, but make it available for the cinnamon applets runtime.
+
+After changing code restart the applet with this command:
+```
+dbus-send --session --dest=org.Cinnamon.LookingGlass 
+--type=method_call /org/Cinnamon/LookingGlass org.Cinnamon.
+LookingGlass.ReloadExtension string:'sct@skulptist.de' string:'APPLET'
+```
+
+make Strings translateable with the _ function of the translation.js
+After that generate a pot file through
+```
+cinnamon-xlet-makepot .
+```
+and edit the po translations with the app poedit
+
+After modifing the po translations use
+```
+cinnamon-xlet-makepot -i .
+```
+to make the translations available in the applet. Could be necessary to reload the applet with the dbus-send command above.
+
