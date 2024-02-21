@@ -54,3 +54,7 @@ cinnamon-xlet-makepot -i .
 ```
 to make the translations available in the applet. Could be necessary to reload the applet with the dbus-send command above.
 
+Use `global.log` to make debug lines. Works like console.log. You can visit the log console in 
+the **looking glas**. To open it use the cinnamon command opener, Alt+F2 in default, and type lg. 
+Or make your own shortcut in the keyboard app. 
+
